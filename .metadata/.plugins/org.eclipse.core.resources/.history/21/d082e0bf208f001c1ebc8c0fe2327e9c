@@ -1,0 +1,9 @@
+import javax.swing.JFrame;
+
+public class bai1 extends JFrame {
+
+	public bai1() {
+		setTitle()
+	}
+	
+}
