@@ -6,12 +6,13 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 public class GiaiPTBac2 extends JFrame implements ActionListener{
 	  private JTextField textFieldA,textFieldB,textFieldC,textFieldKQ ;
-	  private JLabel txtKQ;
+
 	  private JButton btnKQ,btnXoa,btnThoat;
 	  
 	public GiaiPTBac2() {
@@ -21,42 +22,62 @@ public class GiaiPTBac2 extends JFrame implements ActionListener{
 		setTitle("^_^");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(new BorderLayout());
-		setSize(300,400);
+		setSize(500,400);
 		setResizable(false);
 		
 		
 		JLabel Title = new JLabel("Giai phuong trinh bac 2", JLabel.CENTER);
 
-		textFieldA = new JTextField(20);
-        textFieldB = new JTextField(20);
-        textFieldC = new JTextField(20);
-        textFieldKQ = new JTextField(20);
+
         
         btnKQ = new JButton("Giải");
         btnXoa = new JButton("Xóa rỗng");
         btnThoat = new JButton("Thoát");
-        
-        
-        textFieldA.addActionListener(this);
-        textFieldB.addActionListener(this);
-        textFieldC.addActionListener(this);
-        textFieldKQ.addActionListener(this);
+       
         btnKQ.addActionListener(this);
         btnXoa.addActionListener(this);
         btnThoat.addActionListener(this);
        
+        JPanel panelCenter = new JPanel();
+        panelCenter.setLayout(null);
         
-		JPanel panel = new JPanel(); 
-		panel.add(new JLabel("Nhập a: "));
-		panel.add(textFieldA );
-		panel.add(new JLabel("Nhập b: "));
-		panel.add(textFieldB);
-		panel.add(new JLabel("Nhập c: "));
-		panel.add(textFieldC);
-		panel.add(new JLabel("kết quả: "));
-		panel.add(textFieldKQ);
-		
-		
+        int x = 20, y = 40, width = 100, height =30;
+        
+        JLabel lblA,lblB,lblC,lblKQ;
+        panelCenter.add(lblA= new JLabel("Nhập a:"));
+        lblA.setBounds(x, y, width, height);
+        
+        panelCenter.add(lblB= new JLabel("Nhập b:"));
+        y += 50;
+        lblB.setBounds(x, y, width, height);
+        
+        panelCenter.add(lblC= new JLabel("Nhập c:"));
+        y += 50;
+        lblC.setBounds(x, y, width, height);
+        
+        panelCenter.add(lblKQ= new JLabel("Kết quả:"));
+        y += 50;
+        lblKQ.setBounds(x, y, width, height);
+        
+       
+//       Nhập
+        x+=100; y =40; width= 300;
+        panelCenter.add(textFieldA = new JTextField());
+        textFieldA.setBounds(x, y, width, height);
+        
+        panelCenter.add(textFieldB = new JTextField());
+        y += 50;
+        textFieldB.setBounds(x, y, width, height);
+        
+        panelCenter.add(textFieldC = new JTextField());
+        y += 50;
+        textFieldC.setBounds(x, y, width, height);
+        
+        panelCenter.add(textFieldKQ = new JTextField());
+        y += 50;
+        textFieldKQ.setBounds(x, y, width, height);
+        textFieldKQ.setEditable(false);
+
 		JPanel control = new JPanel(); 
 		control.add(btnKQ);
 		control.add(btnXoa);
@@ -64,10 +85,26 @@ public class GiaiPTBac2 extends JFrame implements ActionListener{
 		control.setBorder(BorderFactory.createTitledBorder("Chọn tác vụ"));
 		
 		this.add(Title, BorderLayout.NORTH);
-		this.add(panel, BorderLayout.CENTER);
+		this.add(panelCenter, BorderLayout.CENTER);
 		this.add(control, BorderLayout.SOUTH);
 	}
 
+	private boolean isInt(JTextField text) {
+		boolean result = true;
+		try {
+			Integer.parseInt(text.getText());
+		}
+		catch(NumberFormatException ex) {
+			result =  false;
+		}
+		
+		return result;
+	}
+	private void focus(JTextField text) {
+		JOptionPane.showMessageDialog(null, "Lỗi nhập liệu.");
+		text.selectAll();
+		text.requestFocus();
+	}
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
@@ -75,12 +112,23 @@ public class GiaiPTBac2 extends JFrame implements ActionListener{
 		String kq=null;
 		float a,b,c;
 		if(o == btnKQ) {
-			a = Float.parseFloat(textFieldA.getText());
-			b = Float.parseFloat(textFieldB.getText());
-			c = Float.parseFloat(textFieldC.getText());
+			if(!isInt(textFieldA)) {
+				focus(textFieldA);
+			}
+			else if(!isInt(textFieldB)) {
+				focus(textFieldB);
+			}
+			else if(!isInt(textFieldC)) {
+				focus(textFieldC);
+			}
+			else {
+				a = Float.parseFloat(textFieldA.getText());
+				b = Float.parseFloat(textFieldB.getText());
+				c = Float.parseFloat(textFieldC.getText());
 
-			kq = tinhGiaiPTBac2(a,b,c);
-			textFieldKQ.setText(kq);
+				kq = tinhGiaiPTBac2(a,b,c);
+				textFieldKQ.setText(kq);
+			}
 		}
 		if(o == btnXoa) {
 			textFieldKQ.setText("");
